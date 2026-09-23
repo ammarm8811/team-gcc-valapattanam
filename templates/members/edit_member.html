@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Member | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            ✏️ Edit Member
+        </h1>
+
+        <p class="text-muted">
+            Update information for {{ member.full_name }}
+        </p>
+
+    </div>
+
+
+    <!-- Personal Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                👤 Personal Information
+            </h3>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="full_name"
+                        value="{{ member.full_name }}"
+                        class="form-control"
+                        form="edit-form"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ member.email }}"
+                        class="form-control"
+                        form="edit-form"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        WhatsApp
+                    </label>
+
+                    <input
+                        type="text"
+                        name="phone_whatsapp"
+                        value="{{ member.phone_whatsapp }}"
+                        class="form-control"
+                        form="edit-form"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Date of Birth
+                    </label>
+
+                    <input
+                        type="date"
+                        name="dob"
+                        value="{{ member.dob|date:'Y-m-d' }}"
+                        class="form-control"
+                        form="edit-form"
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Blood Group
+                    </label>
+
+                    <select
+                        name="blood_group"
+                        class="form-select"
+                        form="edit-form"
+                    >
+
+                        <option value="">
+                            Select Blood Group
+                        </option>
+
+                        {% for code, name in member.BLOOD_GROUPS %}
+
+                            <option
+                                value="{{ code }}"
+                                {% if member.blood_group == code %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- GCC Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                🌍 GCC Information
+            </h3>
+
+            <form method="POST" id="edit-form">
+
+                {% csrf_token %}
+
+                {{ gcc_form.as_p }}
+
+                <hr class="my-4">
+
+
+                <!-- Home Information -->
+
+                <h3 class="mb-4">
+                    🏠 Home Information
+                </h3>
+
+                {{ home_form.as_p }}
+
+                <hr class="my-4">
+
+
+                <!-- Skills & Jobs -->
+
+                <h3 class="mb-4">
+                    💼 Skills & Jobs
+                </h3>
+
+                {{ skills_form.as_p }}
+
+
+                <div class="text-center mt-4">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success me-2"
+                    >
+                        💾 Save Changes
+                    </button>
+
+                    <a
+                        href="/admin-dashboard/member/{{ member.id }}/"
+                        class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

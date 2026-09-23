@@ -1,0 +1,848 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Dashboard | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            Admin Dashboard
+        </h1>
+
+        <p class="text-muted">
+            Manage and monitor TEAM GCC Valapattanam members.
+        </p>
+
+    </div>
+
+
+    <!-- Statistics -->
+
+    <div class="row">
+
+        <div class="col-6 col-md-3 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <h2>👥</h2>
+
+                    <h5>Total Members</h5>
+
+                    <h2 class="text-success">
+                        {{ total_members }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-md-3 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <h2>💼</h2>
+
+                    <h5>Job Seekers</h5>
+
+                    <h2 class="text-success">
+                        {{ total_job_seekers }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-md-3 mb-4">
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5>💼 Jobs</h5>
+
+                    <h2>{{ total_jobs }}</h2>
+
+                    <p class="text-muted mb-0">
+                        {{ open_jobs }} Open
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-md-3 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <h2>🌍</h2>
+
+                    <h5>GCC Countries</h5>
+
+                    <h2 class="text-success">
+                        {{ total_countries }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Members by Country -->
+    
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-globe2"></i>
+                Members by Country
+            </h5>
+
+            <div class="row g-3">
+
+                {% for country, count in country_stats.items %}
+
+                    <div class="col-6 col-md-4 col-lg-2">
+
+                        <div class="border rounded p-3 text-center">
+
+                            <div class="fw-semibold">
+                                {{ country }}
+                            </div>
+
+                            <div class="fs-4 fw-bold text-success">
+                                {{ count }}
+                            </div>
+
+                            <small class="text-muted">
+                                Members
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Members by Country Chart -->
+
+    <div class="card shadow-sm mt-4 mb-5">
+
+        <div class="card-body">
+
+            <h3 class="mb-4 text-center">
+                🌍 Member Distribution by Country
+            </h3>
+
+            <div style="max-width: 700px; margin: auto;">
+
+                <canvas id="countryChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Members -->
+
+    <div class="card shadow-sm mt-5">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                👥 Members
+            </h3>
+
+
+            <!-- Filters -->
+
+            <form method="GET" class="mb-4">
+
+                <div class="row">
+
+                    <!-- Search -->
+
+                    <div class="col-md-5 mb-2">
+
+                        <input type="text" name="search" class="form-control" placeholder="Search members..."
+                            value="{{ search|default:'' }}">
+
+                    </div>
+
+
+                    <!-- Country -->
+
+                    <div class="col-md-3 mb-2">
+
+                        <select name="country" class="form-select">
+
+                            <option value="">
+                                All GCC Countries
+                            </option>
+
+                            <option value="UAE" {% if country == 'UAE' %}selected{% endif %}>
+                                UAE
+                            </option>
+
+                            <option value="KSA" {% if country == 'KSA' %}selected{% endif %}>
+                                Saudi Arabia
+                            </option>
+
+                            <option value="Qatar" {% if country == 'Qatar' %}selected{% endif %}>
+                                Qatar
+                            </option>
+
+                            <option value="Oman" {% if country == 'Oman' %}selected{% endif %}>
+                                Oman
+                            </option>
+
+                            <option value="Bahrain" {% if country == 'Bahrain' %}selected{% endif %}>
+                                Bahrain
+                            </option>
+
+                            <option value="Kuwait" {% if country == 'Kuwait' %}selected{% endif %}>
+                                Kuwait
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Blood Group -->
+
+                    <div class="col-md-3 mb-2">
+
+                        <select name="blood_group" class="form-select">
+
+                            <option value="">
+                                All Blood Groups
+                            </option>
+
+                            <option value="A+" {% if blood_group == 'A+' %}selected{% endif %}>
+                                A+
+                            </option>
+
+                            <option value="A-" {% if blood_group == 'A-' %}selected{% endif %}>
+                                A-
+                            </option>
+
+                            <option value="B+" {% if blood_group == 'B+' %}selected{% endif %}>
+                                B+
+                            </option>
+
+                            <option value="B-" {% if blood_group == 'B-' %}selected{% endif %}>
+                                B-
+                            </option>
+
+                            <option value="O+" {% if blood_group == 'O+' %}selected{% endif %}>
+                                O+
+                            </option>
+
+                            <option value="O-" {% if blood_group == 'O-' %}selected{% endif %}>
+                                O-
+                            </option>
+
+                            <option value="AB+" {% if blood_group == 'AB+' %}selected{% endif %}>
+                                AB+
+                            </option>
+
+                            <option value="AB-" {% if blood_group == 'AB-' %}selected{% endif %}>
+                                AB-
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Job Status -->
+
+                    <div class="col-md-3 mb-2">
+
+                        <select name="job_status" class="form-select">
+
+                            <option value="">
+                                All Job Status
+                            </option>
+
+                            <option value="looking" {% if job_statu == 'looking' %}selected{% endif %}>
+                                Looking for Job
+                            </option>
+
+                            <option value="not_looking" {% if job_status == 'not_looking' %}selected{% endif %}>
+                                Not Looking for Job
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Ward -->
+
+                    <div class="col-md-3 mb-2">
+
+                        <input type="text" name="ward" class="form-control" placeholder="Ward Number"
+                            value="{{ ward|default:'' }}">
+
+                    </div>
+
+
+                    <!-- Filter -->
+
+                    <div class="col-md-1 mb-2">
+
+                        <button type="submit" class="btn btn-success w-100">
+                            🔎
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+            <!-- Members Table -->
+
+            {% if members %}
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Member</th>
+                            <th>Email</th>
+                            <th>WhatsApp</th>
+                            <th>Blood Group</th>
+                            <th>GCC Country</th>
+                            <th>Job Title</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for member in members %}
+
+                        <tr>
+
+                            <td>
+                                {{ member.full_name }}
+                            </td>
+
+                            <td>
+                                {{ member.email }}
+                            </td>
+
+                            <td>
+                                {{ member.phone_whatsapp }}
+                            </td>
+
+                            <td>
+                                {{ member.blood_group|default:"Not provided" }}
+                            </td>
+
+                            <td>
+
+                                {% if member.gcc_details %}
+
+                                {{ member.gcc_details.get_country_display }}
+
+                                {% else %}
+
+                                Not provided
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if member.gcc_details %}
+
+                                {{ member.gcc_details.job_title }}
+
+                                {% else %}
+
+                                Not provided
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                <a href="/admin-dashboard/member/{{ member.id }}/"
+                                    class="btn btn-sm btn-outline-success">
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% if members.has_other_pages %}
+
+                <div class="d-flex justify-content-center mt-4">
+
+                    {% if members.has_previous %}
+
+                        <a
+                            href="?page={{ members.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if country %}&country={{ country }}{% endif %}{% if blood_group %}&blood_group={{ blood_group }}{% endif %}{% if ward %}&ward={{ ward }}{% endif %}{% if job_status %}&job_status={{ job_status }}{% endif %}"
+                            class="btn btn-outline-primary me-2">
+                            ← Previous
+                        </a>
+
+                    {% endif %}
+
+
+                    <span class="btn btn-primary disabled">
+                        Page {{ members.number }} of {{ members.paginator.num_pages }}
+                    </span>
+
+
+                    {% if members.has_next %}
+
+                        <a
+                            href="?page={{ members.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if country %}&country={{ country }}{% endif %}{% if blood_group %}&blood_group={{ blood_group }}{% endif %}{% if ward %}&ward={{ ward }}{% endif %}{% if job_status %}&job_status={{ job_status }}{% endif %}"
+                            class="btn btn-outline-primary ms-2">
+                            Next →
+                        </a>
+
+                    {% endif %}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% else %}
+
+            <div class="alert alert-info">
+                No members found.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <!-- Job Seekers Chart -->
+
+    <div class="card shadow-sm mt-5 mb-5">
+
+        <div class="card-body">
+
+            <h3 class="mb-4 text-center">
+                📊 Job Seeker Statistics
+            </h3>
+
+            <div style="max-width: 600px; margin: auto;">
+
+                <canvas id="jobSeekersChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Blood Group Statistics -->
+
+    <div class="card shadow-sm mt-5 mb-5">
+
+        <div class="card-body">
+
+            <h3 class="mb-4 text-center">
+                🩸 Blood Group Statistics
+            </h3>
+
+            <div style="max-width: 700px; margin: auto;">
+
+                <canvas id="bloodGroupChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Blood Group Chart -->
+
+    <script>
+
+        const bloodGroupChart =
+            document.getElementById('bloodGroupChart');
+
+        new Chart(bloodGroupChart, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: [
+                    {% for blood_group, count in blood_group_stats.items %}
+                        '{{ blood_group }}',
+                    {% endfor %}
+                ],
+
+            datasets: [{
+
+                label: 'Members',
+
+                data: [
+                    {% for blood_group, count in blood_group_stats.items %}
+                            {{ count }},
+            {% endfor %}
+        ]
+
+                }]
+
+            },
+
+            options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        stepSize: 1
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        });
+
+    </script>
+
+
+    <!-- Export -->
+
+    <div class="text-center mt-4 mb-4">
+
+        <div class="card shadow mt-4">
+
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+                    📢 Job Postings
+                </h4>
+
+                <a
+                    href="{% url 'applications' %}"
+                    class="btn btn-light btn-sm">
+                    📋 Manage Applications
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                {% if total_jobs > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Posted Date</th>
+                                <th>Applications</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for job in jobs %}
+
+                            <tr>
+                                <td>{{ job.job_title }}</td>
+                                <td>{{ job.company }}</td>
+                                <td>{{ job.location }}</td>
+                                <td>
+
+                                    {% if job.status == 'Open' %}
+
+                                    <span class="badge bg-success">
+                                        Open
+                                    </span>
+
+                                    {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        Closed
+                                    </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    {{ job.posted_date|date:"d M Y" }}
+
+                                </td>
+
+                                <td>
+                                    <a
+                                        href="{% url 'applications' %}"
+                                        class="text-decoration-none">
+
+                                        <span class="badge bg-primary">
+                                            {{ job.applications.count }}
+                                        </span>
+
+                                    </a>
+                                </td>
+
+                                <td>
+
+                                    <a href="/admin-dashboard/job/{{ job.id }}/edit/"
+                                        class="btn btn-sm btn-outline-primary me-1">
+                                        ✏️ Edit
+                                    </a>
+
+                                    <a href="/admin-dashboard/job/{{ job.id }}/delete/"
+                                        class="btn btn-sm btn-outline-danger">
+                                        🗑️ Delete
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+
+                <p class="text-muted mb-0">
+                    No job postings available.
+                </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <a href="/admin-dashboard/export-excel/" class="btn btn-success me-2 m-2">
+            📥 Export Members to Excel
+        </a>
+
+        <a href="/admin-dashboard/export-pdf/" class="btn btn-danger m-2">
+            📄 Export Members to PDF
+        </a>
+
+        <a href="/admin-dashboard/add-job/" class="btn btn-primary m-2">
+            📢 Post New Job
+        </a>
+
+    </div>
+
+
+    <!-- Navigation -->
+
+    <div class="text-center mt-4 mb-5">
+
+        <a href="/admin/" class="btn btn-dark me-2">
+            Django Admin
+        </a>
+
+        <a href="/" class="btn btn-outline-secondary">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- Chart.js -->
+
+<script>
+
+    const chart = document.getElementById(
+        'jobSeekersChart'
+    );
+
+    new Chart(chart, {
+
+        type: 'bar',
+
+        data: {
+
+            labels: [
+                'Looking for Job',
+                'Not Looking for Job'
+            ],
+
+            datasets: [{
+
+                label: 'Members',
+
+                data: [
+                    {{ job_seekers }},
+            {{ not_job_seekers }}
+                ]
+
+    }]
+
+        },
+
+        options: {
+
+        responsive: true,
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    stepSize: 1
+
+                }
+
+            }
+
+        }
+
+    }
+    }
+    );
+
+</script>
+
+<script>
+
+    const countryChart = document.getElementById(
+        'countryChart'
+    );
+
+    new Chart(countryChart, {
+
+        type: 'bar',
+
+        data: {
+
+            labels: [
+
+                {% for country, count in country_stats.items %}
+
+                    '{{ country }}',
+
+                {% endfor %}
+
+            ],
+
+            datasets: [{
+
+                label: 'Members',
+
+                data: [
+
+                    {% for country, count in country_stats.items %}
+
+                        {{ count }},
+
+                    {% endfor %}
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        stepSize: 1
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+{% endblock %}

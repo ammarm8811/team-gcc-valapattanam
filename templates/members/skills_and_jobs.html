@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Skills & Jobs | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="text-center mb-4">
+
+                <h1 class="fw-bold">
+                    💼 Skills & Jobs
+                </h1>
+
+                <p class="text-muted">
+                    Add your education, professional skills and job preferences.
+                </p>
+
+            </div>
+
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+                        Career Information
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body p-4">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Education Qualification
+                            </label>
+
+                            {{ form.education_qualification }}
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Professional Skills
+                            </label>
+
+                            {{ form.professional_skills }}
+
+                        </div>
+
+
+                        <div class="form-check mb-3">
+
+                            {{ form.looking_for_job }}
+
+                            <label
+                                class="form-check-label fw-semibold"
+                                for="{{ form.looking_for_job.id_for_label }}"
+                            >
+                                I am currently looking for a job
+                            </label>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Resume URL
+                            </label>
+
+                            {{ form.resume_url }}
+
+                            <div class="form-text">
+                                Optional. Add a link to your online resume.
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between">
+
+                            <a
+                                href="{% url 'dashboard' %}"
+                                class="btn btn-outline-secondary"
+                            >
+                                ← Back to Dashboard
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-success px-4"
+                            >
+                                💾 Save Details
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

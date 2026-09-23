@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Emergency & Blood Donation | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            🚨 Emergency & Blood Donation
+        </h1>
+
+        <p class="text-muted">
+            Find TEAM GCC members who can help in an emergency blood requirement.
+        </p>
+
+    </div>
+
+    
+    <!-- Emergency Notice -->
+
+    <div class="row justify-content-center mb-4">
+
+        <div class="col-lg-9">
+
+            <div class="alert alert-danger shadow-sm">
+
+                <h5 class="fw-bold">
+                    🚨 Emergency Notice
+                </h5>
+
+                <p class="mb-0">
+                    For urgent blood requirements, contact a matching donor
+                    directly using WhatsApp. Please verify blood group
+                    compatibility with a medical professional or hospital.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Blood Group Search -->
+
+    <div class="row justify-content-center mb-5">
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">
+                        🩸 Find a Blood Donor
+                    </h5>
+
+                    <form method="GET">
+
+                        <div class="input-group">
+
+                            <select
+                                id="bloodGroup"
+                                name="blood_group"
+                                class="form-select"
+                                required
+                            >
+                                <option value="">
+                                    Select Blood Group
+                                </option>
+
+                                <option value="A+">
+                                    A+
+                                </option>
+
+                                <option value="A-">
+                                    A-
+                                </option>
+
+                                <option value="B+">
+                                    B+
+                                </option>
+
+                                <option value="B-">
+                                    B-
+                                </option>
+
+                                <option value="O+">
+                                    O+
+                                </option>
+
+                                <option value="O-">
+                                    O-
+                                </option>
+
+                                <option value="AB+">
+                                    AB+
+                                </option>
+
+                                <option value="AB-">
+                                    AB-
+                                </option>
+                            </select>
+                            
+                            <button type="submit" class="btn btn-danger px-4">
+                                🔎 Search
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Search Results -->
+
+    {% if searched %}
+
+    {% if donors %}
+
+    <h4 class="fw-bold">
+        🩸 Available Donors
+    </h4>
+
+    <p class="text-muted">
+        Members with blood group
+        <span class="badge bg-danger">
+            {{ selected_blood_group }}
+        </span>
+    </p>
+
+
+    <div class="row">
+
+        {% for donor in donors %}
+
+        <div class="col-md-6 col-lg-4 mb-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                        style="width: 65px; height: 65px; font-size: 22px;">
+                        🩸
+                    </div>
+
+
+                    <h5 class="fw-bold">
+                        {{ donor.full_name }}
+                    </h5>
+
+
+                    <span class="badge bg-danger mb-3">
+                        {{ donor.blood_group }}
+                    </span>
+
+
+                    {% if donor.gcc_details %}
+
+                    <p class="text-muted mb-1">
+                        🌍
+                        {{ donor.gcc_details.city }},
+                        {{ donor.gcc_details.get_country_display }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <p class="text-muted mb-3">
+                        WhatsApp available
+                    </p>
+
+
+                    <a href="https://wa.me/{{ donor.whatsapp_link }}" target="_blank" class="btn btn-success w-100">
+                        💬 Contact on WhatsApp
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="alert alert-warning text-center shadow-sm">
+
+                <h5 class="fw-bold">
+                    🩸 No Donors Found
+                </h5>
+
+                <p class="mb-0">
+                    No registered members were found for the selected blood group.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    {% endif %}
+
+
+    <!-- Navigation -->
+
+    <div class="text-center mt-5">
+
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary me-2">
+            📊 Dashboard
+        </a>
+
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+            🏠 Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Login | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card shadow">
+
+                <div class="card-body p-4">
+
+                    <h2 class="text-center mb-4">
+                        Member Login
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+
+                        {% for field in form %}
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.errors %}
+                                    <div class="text-danger mt-1">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-success w-100"
+                        >
+                            Login
+                        </button>
+
+                    </form>
+
+
+                    <p class="text-center mt-3 mb-0">
+
+                        Don't have an account?
+
+                        <a href="/register/">
+                            Register
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Job Portal | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            💼 Job Portal
+        </h1>
+
+        <p class="text-muted">
+            Discover job opportunities shared with the TEAM GCC community.
+        </p>
+
+    </div>
+
+
+    <!-- Job Listings -->
+
+    {% if jobs %}
+
+        <div class="row">
+
+            {% for job in jobs %}
+
+                <div class="col-lg-6 mb-4">
+
+                    <div class="card shadow-sm h-100 border-0">
+
+                        <div class="card-body p-4">
+
+                            <!-- Job Header -->
+
+                            <div class="d-flex justify-content-between align-items-start">
+
+                                <div>
+
+                                    <h4 class="fw-bold mb-1">
+                                        {{ job.job_title }}
+                                    </h4>
+
+                                    <h6 class="text-success mb-3">
+                                        {{ job.company }}
+                                    </h6>
+
+                                </div>
+
+                                <span class="badge bg-success">
+                                    Open
+                                </span>
+
+                            </div>
+
+
+                            <!-- Location -->
+
+                            <p class="text-muted mb-3">
+                                📍 {{ job.location }}
+                            </p>
+
+
+                            <!-- Description -->
+
+                            <div class="mb-3">
+
+                                <h6 class="fw-semibold">
+                                    Job Description
+                                </h6>
+
+                                <p class="text-muted">
+                                    {{ job.job_description }}
+                                </p>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- Contact -->
+
+                            <div class="mb-3">
+
+                                <p class="mb-1">
+                                    <strong>📞 Contact:</strong>
+                                    {{ job.contact_email_phone }}
+                                </p>
+
+                                <p class="text-muted small mb-0">
+                                    Posted on
+                                    {{ job.posted_date|date:"d M Y" }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- Apply Button -->
+
+                            {% if request.user.is_authenticated %}
+
+                                {% if job.id in applied_job_ids %}
+
+                                    <button
+                                        class="btn btn-secondary w-100"
+                                        disabled
+                                    >
+                                        ✓ Already Applied
+                                    </button>
+
+                                {% else %}
+
+                                    <form
+                                        method="POST"
+                                        action="{% url 'apply_job' job.id %}"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success w-100"
+                                        >
+                                            Apply for Job
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                            {% else %}
+
+                                <a
+                                    href="{% url 'login' %}"
+                                    class="btn btn-outline-success w-100"
+                                >
+                                    🔐 Login to Apply
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- No Jobs -->
+
+        <div class="alert alert-info text-center shadow-sm">
+
+            <h5 class="mb-2">
+                📭 No Open Jobs
+            </h5>
+
+            <p class="mb-0">
+                There are no open job opportunities available right now.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- Bottom Navigation -->
+
+    <div class="text-center mt-4">
+
+        {% if request.user.is_authenticated %}
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="btn btn-outline-primary me-2"
+            >
+                📊 Dashboard
+            </a>
+
+        {% endif %}
+
+        <a
+            href="{% url 'home' %}"
+            class="btn btn-outline-secondary"
+        >
+            🏠 Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

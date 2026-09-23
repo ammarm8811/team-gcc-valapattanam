@@ -1,0 +1,679 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Member Dashboard | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<!-- Navbar -->
+
+
+<div class="container py-5">
+
+    <!-- Welcome -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold text-success">
+            Welcome, {{ request.user.full_name }} 👋
+        </h1>
+
+        <p class="lead text-muted">
+            Manage your TEAM GCC profile and community information
+        </p>
+
+    </div>
+
+
+    <!-- Profile Completion -->
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center mb-2">
+
+                <div class="col-12 col-md-9">
+
+                    <h5 class="fw-bold mb-1">
+                        👤 Profile Completion
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Complete your profile to help TEAM GCC maintain accurate member information.
+                    </p>
+
+                </div>
+
+                <div class="col-12 col-md-3 text-md-end mt-2 mt-md-0">
+
+                    <h4 class="fw-bold text-success mb-0">
+                        {{ profile_completion }}%
+                    </h4>
+
+                </div>
+
+            </div>
+
+
+            <!-- Progress Bar -->
+
+            <div class="progress mt-3" style="height: 12px;">
+
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ profile_completion }} % ; "
+                    aria-valuenow="{{ profile_completion }}" aria-valuemin="0" aria-valuemax="100">
+                </div>
+
+            </div>
+
+
+            <!-- Completion Status -->
+
+            <div class="mt-3">
+
+                <div class="row g-2">
+
+                    <!-- Personal Information -->
+
+                    <div class="col-12 col-md-6">
+
+                        {% if request.user.full_name and request.user.email and request.user.phone_whatsapp %}
+
+                        <span class="text-success fw-semibold">
+                            ✓ Personal Information
+                        </span>
+
+                        {% else %}
+
+                        <a href="{% url 'dashboard' %}" class="text-danger text-decoration-none fw-semibold">
+                            ⚠ Personal Information incomplete
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- GCC Details -->
+
+                    <div class="col-12 col-md-6">
+
+                        {% if gcc_details %}
+
+                        <span class="text-success fw-semibold">
+                            ✓ GCC Details
+                        </span>
+
+                        {% else %}
+
+                        <a href="{% url 'gcc_details' %}" class="text-danger text-decoration-none fw-semibold">
+                            ⚠ GCC Details incomplete →
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Home Details -->
+
+                    <div class="col-12 col-md-6">
+
+                        {% if home_details %}
+
+                        <span class="text-success fw-semibold">
+                            ✓ Home Details
+                        </span>
+
+                        {% else %}
+
+                        <a href="{% url 'home_details' %}" class="text-danger text-decoration-none fw-semibold">
+                            ⚠ Home Details incomplete →
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Skills & Jobs -->
+
+                    <div class="col-12 col-md-6">
+
+                        {% if skills_and_jobs %}
+
+                        <span class="text-success fw-semibold">
+                            ✓ Skills & Jobs
+                        </span>
+
+                        {% else %}
+
+                        <a href="{% url 'skills_and_jobs' %}" class="text-danger text-decoration-none fw-semibold">
+                            ⚠ Skills & Jobs incomplete →
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Profile Summary -->
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white py-3">
+
+            <h3 class="mb-0">
+                👤 My Profile
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="row">
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Full Name
+                    </small>
+
+                    <strong>
+                        {{ request.user.full_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Email
+                    </small>
+
+                    <strong>
+                        {{ request.user.email }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        WhatsApp
+                    </small>
+
+                    <strong>
+                        {{ request.user.phone_whatsapp }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Blood Group
+                    </small>
+
+                    <strong class="text-danger">
+                        {{ request.user.blood_group|default:"Not provided" }}
+                    </strong>
+
+                </div>
+
+
+                {% if gcc_details %}
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        GCC Country
+                    </small>
+
+                    <strong>
+                        {{ gcc_details.get_country_display }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        City
+                    </small>
+
+                    <strong>
+                        {{ gcc_details.city }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Company
+                    </small>
+
+                    <strong>
+                        {{ gcc_details.company_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Job Title
+                    </small>
+
+                    <strong>
+                        {{ gcc_details.job_title }}
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Home Details -->
+
+    {% if home_details %}
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-header bg-dark text-white py-3">
+
+            <h3 class="mb-0">
+                🏠 My Home Details
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="row">
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        House Name
+                    </small>
+
+                    <strong>
+                        {{ home_details.house_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Ward Number
+                    </small>
+
+                    <strong>
+                        {{ home_details.ward_number }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Family Location
+                    </small>
+
+                    <strong>
+                        {{ home_details.family_location }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        NORKA ID
+                    </small>
+
+                    <strong>
+                        {{ home_details.norka_id_status }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Emergency Contact
+                    </small>
+
+                    <strong>
+                        {{ home_details.emergency_contact_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Emergency Number
+                    </small>
+
+                    <strong>
+                        {{ home_details.emergency_contact_number }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Skills & Jobs -->
+
+    {% if skills_and_jobs %}
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-header bg-success text-white py-3">
+
+            <h3 class="mb-0">
+                💼 My Skills & Jobs
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="row">
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Education
+                    </small>
+
+                    <strong>
+                        {{ skills_and_jobs.education_qualification }}
+                    </strong>
+
+                </div>
+
+
+                <div class="col-12 col-md-6 mb-4">
+
+                    <small class="text-muted d-block">
+                        Looking for Job
+                    </small>
+
+                    {% if skills_and_jobs.looking_for_job %}
+
+                    <span class="badge bg-success">
+                        Yes
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-secondary">
+                        No
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="col-12 mb-4">
+
+                    <small class="text-muted d-block">
+                        Professional Skills
+                    </small>
+
+                    <p class="mb-0 mt-2">
+                        {{ skills_and_jobs.professional_skills }}
+                    </p>
+
+                </div>
+
+
+                {% if skills_and_jobs.resume_url %}
+
+                <div class="col-12">
+
+                    <small class="text-muted d-block mb-2">
+                        Resume
+                    </small>
+
+                    <a href="{{ skills_and_jobs.resume_url }}" target="_blank" class="btn btn-outline-success btn-sm">
+                        📄 View Resume
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Quick Actions -->
+
+    <div class="text-center mb-4">
+
+        <h2 class="fw-bold">
+            Quick Actions
+        </h2>
+
+        <p class="text-muted">
+            Manage your information and access community services
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- GCC Details -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="display-5">
+                        🌍
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        GCC Details
+                    </h5>
+
+                    <p class="text-muted small">
+                        Manage your country, city, company and job information.
+                    </p>
+
+                    <a href="{% url 'gcc_details' %}" class="btn btn-success">
+                        Manage
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Home Details -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="display-5">
+                        🏠
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Home Details
+                    </h5>
+
+                    <p class="text-muted small">
+                        Manage your home and emergency contact information.
+                    </p>
+
+                    <a href="{% url 'home_details' %}" class="btn btn-success">
+                        Manage
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Skills & Jobs -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="display-5">
+                        🎓
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Skills & Jobs
+                    </h5>
+
+                    <p class="text-muted small">
+                        Manage your education, skills and job preferences.
+                    </p>
+
+                    <a href="{% url 'skills_and_jobs' %}" class="btn btn-success">
+                        Manage
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- My Applications -->
+
+        <div class="col-12 col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="display-5">
+                        📄
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        My Applications
+                    </h5>
+
+                    <p class="text-muted small">
+                        View the jobs you have applied for.
+                    </p>
+
+                    <a href="{% url 'my_applications' %}" class="btn btn-success">
+                        View Applications
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Bottom Actions -->
+
+    <div class="text-center mt-5">
+
+        <a href="{% url 'job_list' %}" class="btn btn-success btn-lg me-2 mb-2">
+            💼 Browse Jobs
+        </a>
+
+        <a href="{% url 'emergency' %}" class="btn btn-danger btn-lg me-2 mb-2">
+            🩸 Emergency
+        </a>
+
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg mb-2">
+            ← Home
+        </a>
+
+    </div>
+
+</div>
+
+<!-- Footer -->
+
+<footer class="bg-dark text-white text-center py-4">
+
+
+    <div class="container">
+
+        <p class="mb-1 fw-bold">
+            TEAM GCC Valapattanam Connect
+        </p>
+
+        <p class="mb-0 text-secondary">
+            Connecting our community across the GCC 🌍
+        </p>
+
+    </div>
+
+</footer>
+
+{% endblock %}

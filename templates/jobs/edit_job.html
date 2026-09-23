@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Job{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">✏️ Edit Job</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Job Title</label>
+                    <input
+                        type="text"
+                        name="job_title"
+                        class="form-control"
+                        value="{{ job.job_title }}"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Company</label>
+                    <input
+                        type="text"
+                        name="company"
+                        class="form-control"
+                        value="{{ job.company }}"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Location</label>
+                    <input
+                        type="text"
+                        name="location"
+                        class="form-control"
+                        value="{{ job.location }}"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Job Description</label>
+                    <textarea
+                        name="job_description"
+                        class="form-control"
+                        rows="5"
+                        required
+                    >{{ job.job_description }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Contact Email / Phone
+                    </label>
+
+                    <input
+                        type="text"
+                        name="contact_email_phone"
+                        class="form-control"
+                        value="{{ job.contact_email_phone }}"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+
+                    <select
+                        name="status"
+                        class="form-select"
+                        required
+                    >
+                        <option
+                            value="Open"
+                            {% if job.status == 'Open' %}selected{% endif %}
+                        >
+                            Open
+                        </option>
+
+                        <option
+                            value="Closed"
+                            {% if job.status == 'Closed' %}selected{% endif %}
+                        >
+                            Closed
+                        </option>
+                    </select>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                >
+                    💾 Save Changes
+                </button>
+
+                <a
+                    href="{% url 'admin_dashboard' %}"
+                    class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

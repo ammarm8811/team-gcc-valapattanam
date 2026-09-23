@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Member Details | TEAM GCC Valapattanam Connect
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <!-- Page Header -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            👤 Member Details
+        </h1>
+
+        <p class="text-muted">
+            Complete information about {{ member.full_name }}
+        </p>
+
+    </div>
+
+
+    <!-- Personal Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                👤 Personal Information
+            </h3>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>Full Name</strong>
+
+                    <p>
+                        {{ member.full_name }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>Email</strong>
+
+                    <p>
+                        {{ member.email }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>WhatsApp</strong>
+
+                    <p>
+                        {{ member.phone_whatsapp }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>Date of Birth</strong>
+
+                    <p>
+                        {{ member.dob|default:"Not provided" }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>Blood Group</strong>
+
+                    <p>
+                        {{ member.blood_group|default:"Not provided" }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <strong>Role</strong>
+
+                    <p>
+                        {{ member.role }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- GCC Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                🌍 GCC Information
+            </h3>
+
+            {% if gcc_details %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Country</strong>
+
+                        <p>
+                            {{ gcc_details.get_country_display }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>City</strong>
+
+                        <p>
+                            {{ gcc_details.city }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Visa Type</strong>
+
+                        <p>
+                            {{ gcc_details.visa_type }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Company</strong>
+
+                        <p>
+                            {{ gcc_details.company_name }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Job Title</strong>
+
+                        <p>
+                            {{ gcc_details.job_title }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Year of Migration</strong>
+
+                        <p>
+                            {{ gcc_details.year_of_migration }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+                    GCC details have not been provided.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Home Information -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                🏠 Home Information
+            </h3>
+
+            {% if home_details %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>House Name</strong>
+
+                        <p>
+                            {{ home_details.house_name }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Ward Number</strong>
+
+                        <p>
+                            {{ home_details.ward_number }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Family Location</strong>
+
+                        <p>
+                            {{ home_details.family_location }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>NORKA ID Status</strong>
+
+                        <p>
+                            {{ home_details.norka_id_status }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Emergency Contact Name</strong>
+
+                        <p>
+                            {{ home_details.emergency_contact_name }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Emergency Contact Number</strong>
+
+                        <p>
+                            {{ home_details.emergency_contact_number }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+                    Home details have not been provided.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Skills & Jobs -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">
+                💼 Skills & Jobs
+            </h3>
+
+            {% if skills_and_jobs %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Education</strong>
+
+                        <p>
+                            {{ skills_and_jobs.education_qualification }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Professional Skills</strong>
+
+                        <p>
+                            {{ skills_and_jobs.professional_skills }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Looking for Job</strong>
+
+                        <p>
+
+                            {% if skills_and_jobs.looking_for_job %}
+
+                                <span class="badge bg-success">
+                                    Yes
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    No
+                                </span>
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>Resume</strong>
+
+                        <p>
+
+                            {% if skills_and_jobs.resume_url %}
+
+                                <a
+                                    href="{{ skills_and_jobs.resume_url }}"
+                                    target="_blank"
+                                    class="btn btn-outline-success btn-sm"
+                                >
+                                    View Resume
+                                </a>
+
+                            {% else %}
+
+                                Not provided
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+                    Skills and job information have not been provided.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Back Button -->
+
+    <div class="text-center mt-4">
+
+        <a
+            href="/admin-dashboard/member/{{ member.id }}/edit/"
+            class="btn btn-success me-2">
+            ✏️ Edit Member
+        </a>
+
+        <a
+            href="/admin-dashboard/member/{{ member.id }}/delete/"
+            class="btn btn-danger me-2">
+            🗑️ Delete Member
+        </a>
+
+        <a
+            href="/admin-dashboard/"
+            class="btn btn-outline-secondary">
+            ← Back to Admin Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
